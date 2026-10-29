@@ -1,31 +1,16 @@
-# SOC Analyst & Cyber Defense Portfolio
+# Project 1: Cerber Ransomware Packet Analysis
 
-Welcome to my cybersecurity portfolio. This repository documents my practical experience, home lab configurations, and incident investigation write-ups as I transition my strong networking foundation into active Cyber Defense and Security Operations (SOC).
+## 🔍 Scenario Overview
+An internal corporate asset was compromised by Cerber Ransomware via a malicious spam (malspam) campaign. As a SOC Analyst, I analyzed the network traffic capture (.pcap) using Wireshark to trace the infection lifecycle.
 
-## 🚀 Professional Objective
-To leverage my technical background in networking and offensive concepts to analyze logs, detect anomalies, and mitigate modern cyber threats effectively. Currently focusing on AI-driven security tools, SIEM monitoring, and remote security operations.
+## 🕵️‍♂️ Executive Summary & Findings
+Through network forensics and leveraging Wireshark's HTTP Object Export feature, the following malicious footprint was uncovered:
 
----
+1. **Patient Zero (Victim):** Internal Host IP `10.12.22.102`
+2. **Initial Redirection:** The victim hit an anomalous hostname `1saj0933.mybluemix.net` fetching the `redirector_bcc` script.
+3. **Malware Delivery (The Payload):** The host was forced to download a malicious file named `71` directly from the external IP address `13.77.0.146` via raw HTTP protocol.
+4. **C2 Communication:** Post-infection traffic shows beaconing to a highly suspicious top-level domain `ftaxmpdqwo...199ovv.top` using structured dynamic strings.
 
-## 📁 Portfolio Directory
-
-### 🟢 Phase 1: Network Traffic & Log Analysis (Current)
-*   **[Project 1: Wireshark Packet Analysis](./Project-1-Wireshark/)** *(Status: In Progress)*
-    *   *Description:* Deep-dive investigation of malicious `.pcap` files to trace attacker footprints, identify compromised hosts, and map out the attack lifecycle.
-*   **[Project 2: Web Server Log Investigation](./Project-2-Log-Analysis/)** *(Status: Pending)*
-    *   *Description:* Analyzing raw Apache/Nginx web server logs to detect SQL Injection, Cross-Site Scripting (XSS), and Brute Force attacks.
-
-### 🔵 Phase 2: SIEM Deployment & Threat Detection (Upcoming)
-*   **[Project 3: Splunk / Elastic Home Lab](./Project-3-SIEM-Lab/)** *(Status: Pending)*
-    *   *Description:* Deploying a localized SIEM environment to ingest Windows Event Logs and Syslog traffic for proactive alerting.
-
----
-
-## 🛠️ Tools & Technologies
-*   **Network Security:** Wireshark, tcpdump, Nmap
-*   **SIEM / Analytics:** Splunk, Elastic Stack (ELK)
-*   **Operating Systems:** Linux (Ubuntu/Kali), Windows Client/Server
-*   **Core Concepts:** TCP/IP Protocols, Log Parsing, Traffic Analysis
-
----
-*Connect with me on [LinkedIn](GANTI_DENGAN_LINK_LINKEDIN_ANDA)*
+## 🛠️ Mitigations & Lessons Learned
+* Block the identified malicious IPs (`13.77.0.146`) and flag the `.top` domain on the corporate firewall/web proxy.
+* Isolate the infected host (`10.12.22.102`) from the local network immediately to prevent lateral movement of the ransomware.
